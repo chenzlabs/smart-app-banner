@@ -34,6 +34,13 @@ var mixins = {
 		getStoreLink: function () {
 			return 'http://www.windowsphone.com/s?appid=' + this.appId;
 		}
+	},
+	oculus: {
+		appMeta: 'oculus-store-app',
+		iconRels: ['oculus-touch-icon', 'apple-touch-icon-precomposed', 'apple-touch-icon'],
+		getStoreLink: function () {
+			return 'https://www.oculus.com/experiences/gear-vr/' + this.appId;
+		}
 	}
 };
 
@@ -47,12 +54,14 @@ var SmartBanner = function (options) {
 		store: {
 			ios: 'On the App Store',
 			android: 'In Google Play',
-			windows: 'In the Windows Store'
+			windows: 'In the Windows Store',
+			oculus: 'In the Oculus Store'
 		},
 		price: {
 			ios: 'FREE',
 			android: 'FREE',
-			windows: 'FREE'
+			windows: 'FREE',
+			oculus: 'FREE'
 		},
 		theme: '', // put platform type ('ios', 'android', etc.) here to force single theme on all device
 		icon: '', // full path to icon image if not using website icon image
@@ -62,6 +71,8 @@ var SmartBanner = function (options) {
 
 	if (this.options.force) {
 		this.type = this.options.force;
+	} else if (navigator.userAgent.indexOf('OculusBrowser') >= 0) {
+		this.type = 'oculus';
 	} else if (agent.os.name === 'Windows Phone' || agent.os.name === 'Windows Mobile') {
 		this.type = 'windows';
 	} else if (agent.os.name === 'iOS') {
